@@ -1,23 +1,42 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 
 import { TestModel } from 'src/app/models/TestModel'
-import { Observable } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
+import { delay } from 'q';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseDbService {
 
-  constructor(private firestore: AngularFirestore) { }
+  
+  public data$: Observable<TestModel[]>;
+
+  constructor(private firestore: AngularFirestore) { 
+    //this.myObservable = new Observable<number>(this.sequenceSubscriber);
+/*
+    myObservable.subscribe(
+      x => console.log('Observer got a next value: ' + x),
+      err => console.error('Observer got an error: ' + err),
+      () => console.log('Observer got a complete notification')
+    );*/
+  }
+
+  
 
   public getTestModel() {
     return this.firestore.collection('testmodel').snapshotChanges();
   }
 
   public getTestModelWith() {
-    var r = this.firestore.collection('testmodel').doc("myid");
-    console.log("inservice");
-    console.log(r);
+    let tmc : AngularFirestoreCollection<TestModel>;
+    tmc = this.firestore.collection<TestModel>('testmodel');
+    this.data$ = tmc.valueChanges();
+    return this.data$;
+  }
+
+  public observableTests() {
+    
   }
 }

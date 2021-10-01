@@ -1,8 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      <ion-button  (click)="print()">Single Read</ion-button>
-      <ion-button  (click)="login()">Login Test</ion-button>
+      Tab 1
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,6 +12,10 @@
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
   </ion-header>
-
+  <div *ngIf="this.fireAuth.user$ | async as credential; else elseBlock">
+    Logged in as: {{credential.user.email}}</div>
+  <div><ng-template #elseBlock>Not logged in</ng-template></div>
+  <ion-button  (click)="login()">Login</ion-button><br>
+  <ion-button  (click)="logout()">Logout Test</ion-button><br>
   <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>
